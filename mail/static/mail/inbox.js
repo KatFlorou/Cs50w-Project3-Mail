@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Send email 
   document.querySelector('#compose-form').addEventListener('submit', send_email);
-  document.querySelector('#compose-form').addEventListener('submit', () => load_mailbox('sent'));
+  //document.querySelector('#compose-form').addEventListener('submit', () => load_mailbox('sent'));
 
   // By default, load the inbox
   load_mailbox('inbox');
@@ -27,8 +27,9 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
-function send_email(event) {
 
+function send_email(event) {
+  
   // Get input
   const compose_recipients = document.querySelector('#compose-recipients').value; 
   const compose_subject = document.querySelector('#compose-subject').value;
@@ -50,8 +51,10 @@ function send_email(event) {
   .then(result => {
     // Print result
     console.log(result);
-  });
-   
+  })
+  // Redirect to sent mailbox
+  .then(load_mailbox('sent'));
+ 
 }
 
 
@@ -168,11 +171,12 @@ function archive_email(email_id, event) {
     body: JSON.stringify({
       archived:true
     })
-  });
+  })
+  // Redirect to user's inbox
+  .then(load_mailbox('inbox'));
   // Stop event propagation
   event.stopImmediatePropagation();
-  // Redirect to user's inbox
-  window.location.reload();
+ 
 }
 
 
@@ -183,16 +187,17 @@ function unarchive_email(email_id, event) {
     body: JSON.stringify({
       archived:false
     })
-  });
+  })
+  // Redirect to user's inbox
+  .then(load_mailbox('inbox'));
   // Stop event propagation
   event.stopImmediatePropagation();
-  // Redirect to user's inbox
-  window.location.reload();
+  
 }
 
 
 function reply_email(email) {
-
+ 
   // Go to compose view
   compose_email();
   
@@ -207,5 +212,6 @@ function reply_email(email) {
   "${email.body}".
   
   `;
+
 }
 
