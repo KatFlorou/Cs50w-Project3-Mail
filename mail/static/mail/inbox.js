@@ -51,10 +51,9 @@ function send_email(event) {
   .then(result => {
     // Print result
     console.log(result);
+     // Redirect to sent mailbox
+    load_mailbox('sent');
   })
-  // Redirect to sent mailbox
-  .then(load_mailbox('sent'));
- 
 }
 
 
@@ -73,7 +72,6 @@ function load_mailbox(mailbox) {
 
 
 function show_mailbox(mailbox) {
-
   // Fetch mailbox
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
